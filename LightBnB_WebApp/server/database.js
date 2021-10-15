@@ -30,8 +30,8 @@ const getUserWithEmail = function(email) {
     })
     .catch((err) => {
       console.log(err.message);
-  });
-}
+    });
+};
 
 exports.getUserWithEmail = getUserWithEmail;
 
@@ -56,8 +56,8 @@ const getUserWithId = function(id) {
     })
     .catch((err) => {
       console.log(err.message);
-  });
-}
+    });
+};
 
 exports.getUserWithId = getUserWithId;
 
@@ -80,18 +80,18 @@ const addUser =  function(user) {
     RETURNING *;
     `, [user.name, user.email, user.password])
     .then((result) => {
-      console.log(result.rows);
-      return result.rows;
+      console.log(result.rows[0]);
+      return result.rows[0];
     })
     .catch((err) => {
       console.log(err.message);
-  });
-}
+    });
+};
 
 exports.addUser = addUser;
 
 // ------ TEST CASE ----- //
-addUser('Dandelion', 'dandelion@gmail.com', 'password');
+// addUser({name:'Dandelion', email:'dandelion@gmail.com', password: 'password'});
 
 
 // ------ RESERVATIONS ----- //
@@ -102,9 +102,26 @@ addUser('Dandelion', 'dandelion@gmail.com', 'password');
  * @return {Promise<[{}]>} A promise to the reservations.
  */
 const getAllReservations = function(guest_id, limit = 10) {
-  return getAllProperties(null, 2);
-}
+  return pool
+    .query(`
+    SELECT * FROM reservations
+    WHERE guest_id = $1
+    LIMIT $2;
+    `, [guest_id, limit])
+    .then((result) => {
+      console.log(result.rows);
+      return result.rows;
+    })
+    .catch((err) => {
+      console.log(err.message);
+    });
+  // return getAllProperties(null, 2);
+};
 exports.getAllReservations = getAllReservations;
+
+// ------ TEST CASE ----- //
+getAllReservations(1);
+
 
 // ------ PROPERTIES ----- //
 
@@ -115,7 +132,7 @@ exports.getAllReservations = getAllReservations;
  * @return {Promise<[{}]>}  A promise to the properties.
  */
 
- const getAllProperties = (options, limit = 10) => {
+const getAllProperties = (options, limit = 10) => {
   return pool
     .query(`SELECT * FROM properties LIMIT $1`, [limit])
     .then((result) => {
@@ -139,5 +156,6 @@ const addProperty = function(property) {
   property.id = propertyId;
   properties[propertyId] = property;
   return Promise.resolve(property);
-}
+};
+
 exports.addProperty = addProperty;
