@@ -25,10 +25,11 @@ const getUserWithEmail = function(email) {
     WHERE email = $1
     `, [email.toLowerCase()])
     .then((result) => {
-      console.log(result.rows);
-      return result.rows;
+      // console.log(result.rows[0]);
+      return result.rows[0];
     })
     .catch((err) => {
+      console.log('is this working------');
       console.log(err.message);
     });
 };
@@ -51,8 +52,8 @@ const getUserWithId = function(id) {
     WHERE id = $1
     `, [id])
     .then((result) => {
-      console.log(result.rows);
-      return result.rows;
+      console.log(result.rows[0]);
+      return result.rows[0];
     })
     .catch((err) => {
       console.log(err.message);
@@ -109,18 +110,17 @@ const getAllReservations = function(guest_id, limit = 10) {
     LIMIT $2;
     `, [guest_id, limit])
     .then((result) => {
-      console.log(result.rows);
+      // console.log(result.rows);
       return result.rows;
     })
     .catch((err) => {
       console.log(err.message);
     });
-  // return getAllProperties(null, 2);
 };
 exports.getAllReservations = getAllReservations;
 
 // ------ TEST CASE ----- //
-getAllReservations(1);
+// getAllReservations(1);
 
 
 // ------ PROPERTIES ----- //
