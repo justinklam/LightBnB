@@ -1,6 +1,7 @@
 const database = require('./database');
 const apiRoutes = require('./apiRoutes');
 const userRoutes = require('./userRoutes');
+const morgan = require('morgan');
 
 const path = require('path');
 
@@ -17,6 +18,7 @@ app.use(cookieSession({
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+app.use(morgan("dev"));
 
 // /api/endpoints
 const apiRouter = express.Router();
