@@ -58,5 +58,5 @@ const submitReservation = function(data) {
     method: "POST",
     url: "/api/reservations",
     data,
-  })
+  });
 }
