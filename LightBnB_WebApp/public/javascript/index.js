@@ -6,6 +6,7 @@ $(() => {
     // when clicked, callback function engages
     $('.reserve-button').on('click', function() {
       const idData = $(this).attr('id').substring(17);
+      // vuews_manager.show changes the view/page to argument
       views_manager.show('newReservation', idData);
     })
   });
