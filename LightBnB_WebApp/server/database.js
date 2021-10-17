@@ -29,7 +29,6 @@ const getUserWithEmail = function(email) {
       return result.rows[0];
     })
     .catch((err) => {
-      console.log('is this working------');
       console.log(err.message);
     });
 };
@@ -52,7 +51,7 @@ const getUserWithId = function(id) {
     WHERE id = $1
     `, [id])
     .then((result) => {
-      console.log(result.rows[0]);
+      // console.log(result.rows[0]);
       return result.rows[0];
     })
     .catch((err) => {
@@ -81,7 +80,7 @@ const addUser =  function(user) {
     RETURNING *;
     `, [user.name, user.email, user.password])
     .then((result) => {
-      console.log(result.rows[0]);
+      // console.log(result.rows[0]);
       return result.rows[0];
     })
     .catch((err) => {
@@ -183,7 +182,7 @@ const getAllProperties = function(options, limit = 10) {
   `;
 
   // 5
-  console.log(queryString, queryParams);
+  // console.log(queryString, queryParams);
 
   // 6
   return pool.query(queryString, queryParams).then((res) => res.rows);
@@ -212,13 +211,13 @@ const addProperty = function(properties) {
     properties.number_of_bathrooms, properties.number_of_bedrooms, properties.country,
     properties.street, properties.city, properties.province, properties.post_code])
     .then((result) => {
-      console.log(result.rows[0]);
+      // console.log(result.rows[0]);
       return result.rows[0];
     })
     .catch((err) => {
       console.log(err.message);
     });
-};
+  };
 
 exports.addProperty = addProperty;
 
@@ -231,6 +230,6 @@ const addReservation = function(reservation) {
     VALUES ($1, $2, $3, $4) RETURNING *;
   `, [reservation.start_date, reservation.end_date, reservation.property_id, reservation.guest_id])
   .then(res => res.rows[0])
-}
+};
 
 exports.addReservation = addReservation;
