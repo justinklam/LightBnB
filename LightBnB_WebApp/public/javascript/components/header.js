@@ -49,7 +49,7 @@ $(() => {
     propertyListings.clearListings();
     getAllReservations()
       .then(function(json) {
-        propertyListings.addProperties(json.reservations, true);
+        propertyListings.addProperties(json.reservations, { upcoming: false });
         views_manager.show('listings');
       })
       .catch(error => console.error(error));
@@ -60,6 +60,10 @@ $(() => {
       .then(function(json) {
         propertyListings.addProperties(json.properties);
         views_manager.show('listings');
+        $('.reserve-button').on('click', function() {
+          const idData = $(this).attr('id').substring(17);
+          views_manager.show('newReservation', idData);
+        });
     });
   });
 
@@ -69,6 +73,10 @@ $(() => {
       .then(function(json) {
         propertyListings.addProperties(json.properties);
         views_manager.show('listings');
+        $('.reserve-button').on('click', function() {
+          const idData = $(this).attr('id').substring(17);
+          views_manager.show('newReservation', idData);
+        });
     });
   });
 

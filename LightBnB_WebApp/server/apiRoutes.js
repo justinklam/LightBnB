@@ -37,6 +37,7 @@ module.exports = function(router, database) {
 
   router.post('/reservations', (req, res) => {
     const userId = req.session.userId;
+    console.log('req.body------', req.body);
     if (userId) {
       database.addReservation({...req.body, guest_id: userId})
       // ... add all keys from req.body into an object, along with the guest_id key we need
