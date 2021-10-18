@@ -1,5 +1,6 @@
 module.exports = function(router, database) {
 
+  // GET ROUTES
   router.get('/properties', (req, res) => {
     database.getAllProperties(req.query, 20)
     .then(properties => res.send({properties}))
@@ -15,7 +16,7 @@ module.exports = function(router, database) {
       res.error("💩");
       return;
     }
-    database.getAllReservations(userId)
+    database.getFulfilledReservations(userId)
     .then(reservations => res.send({reservations}))
     .catch(e => {
       console.error(e);
@@ -23,6 +24,21 @@ module.exports = function(router, database) {
     });
   });
 
+  router.get('/reservations/upcoming', (req, res) => {
+    const userId = req.session.userId;
+    if (!userId) {
+      res.error("💩");
+      return;      
+    }
+    database.getUpcomingReservations(userId)
+    .then(reservations => res.send({ reservations }))
+    .catch(e => {
+      console.error(e);
+      res.send(e);
+    });
+  });
+
+  // POST ROUTES
   router.post('/properties', (req, res) => {
     const userId = req.session.userId;
     database.addProperty({...req.body, owner_id: userId})

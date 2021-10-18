@@ -110,7 +110,7 @@ exports.addUser = addUser;
  * @return {Promise<[{}]>} A promise to the reservations.
  */
 // ------ RESERVATIONS ----- //
-const getAllReservations = function(guest_id, limit = 10) {
+const getFulfilledReservations = function(guest_id, limit = 10) {
   const queryString = `
     SELECT properties.*, reservations.*, avg(rating) as average_rating
     FROM reservations
@@ -133,10 +133,10 @@ const getAllReservations = function(guest_id, limit = 10) {
       console.log(err.message);
     });
 };
-exports.getAllReservations = getAllReservations;
+exports.getFulfilledReservations = getFulfilledReservations;
 
 // ------ TEST CASE ----- //
-// getAllReservations(1);
+// getFulfilledReservations(1);
 
 
 // ------ PROPERTIES ----- //
