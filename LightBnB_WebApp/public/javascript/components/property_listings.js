@@ -26,6 +26,7 @@ $(() => {
     // check for user login
     getMyDetails()
     .then()
+    console.log('properties-----', properties);
     for (const propertyId in properties) {
       const property = properties[propertyId];
       const listing = propertyListing.createListing(property, isReservation);
@@ -42,10 +43,13 @@ $(() => {
       })
       $('.delete-button').on('click', function() {
         const idData = $(this).attr('id').substring(16);
-        console.log(`delete ${idData}`);          
+        console.log(`delete ${idData}`);
+        // deleteReservation(idData).then(data => {
+        //   console.log('data-----', data);
+        //   $(this).attr('id').remove();
+        // });
       })
-    } 
-
+    }
   }
   window.propertyListings.addProperties = addProperties;
 
