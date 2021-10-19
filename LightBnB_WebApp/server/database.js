@@ -197,7 +197,8 @@ const getAllProperties = function(options, limit = 10) {
   // console.log(queryString, queryParams);
 
   // 6
-  return pool.query(queryString, queryParams).then((res) => res.rows);
+  return pool.query(queryString, queryParams)
+    .then((res) => res.rows);
 };
 
 exports.getAllProperties = getAllProperties;
@@ -226,6 +227,7 @@ const addProperty = function(properties) {
   return pool.query(queryString, params)
     .then((result) => {
       // console.log(result.rows[0]);
+      console.log('test then-----');
       return result.rows[0];
     })
     .catch((err) => {
@@ -270,13 +272,48 @@ const getUpcomingReservations = function(guest_id, limit = 10) {
 
 exports.getUpcomingReservations = getUpcomingReservations;
 
-//  Updates an existing reservation with new information
-const updateReservation = function(reservationId, newReservationData) {
-
+// Get Individual Reservation
+const getIndividualReservation = function(reservationId) {
+  const queryString = `SELECT * FROM reservations WHERE reservations.id = $1`;
+  return pool.query(queryString, [reservationId])
+    .then(res => res.rows[0]);
 };
 
+exports.getIndividualReservation = getIndividualReservation;
+
+//  Updates an existing reservation with new information
+const updateReservation = function(reservationData) {
+  let queryString = `UPDATE reservations SET `;
+  const queryParams = [];
+
+  if (reservationData.start_date) {
+    queryParams.push(reservationData.start_date);
+    queryString += `start_date = $1`;
+    if (reservationData.end_date) {
+      queryParams.push(reservationData.end_date);
+      queryString += `, end_date = $2`;
+    }
+  } else {
+    queryParams.push(reservationData.end_date);
+    queryString += `end_date = $1`;
+  }
+  queryString += ` WHERE id = $${queryParams.length + 1} RETURNING *;`;
+  queryParams.push(reservationData.reservation_id);
+  console.log(queryString);
+  return pool.query(queryString, queryParams)
+    .then(res => res.rows[0])
+    .catch(err => console.error(err));
+};
+
+exports.updateReservation = updateReservation;
 
 //  Deletes an existing reservation
 const deleteReservation = function(reservationId) {
-
+  const queryParams = [reservationId];
+  const queryString = `DELETE FROM reservations WHERE id = $1`;
+  return pool.query(queryString, queryParams)
+    .then(() => console.log("Successfully deleted!"))
+    .catch(() => console.error(err));
 };
+
+exports.deleteReservation = deleteReservation;
